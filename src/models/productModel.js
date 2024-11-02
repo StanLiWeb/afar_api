@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import slugify from "slugify";
 
 const productVariantionSchema = new mongoose.Schema({
   color:{
@@ -28,6 +29,10 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    slug:{
+      type:String,
+      unique:true,
+    },
     description: String,
     vendor: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,17 +42,17 @@ const productSchema = new mongoose.Schema(
     category: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Category",
-      required: true,
+      //required: true,
     },
     subcategory: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Category",
-      required: true,
+      //required: true,
     },
     brand: {
       type: mongoose.SchemaTypes.ObjectId,
       ref: "Brand",
-      required: true,
+      //required: true,
     },
     image: [String],
     variations: [productVariantionSchema],
@@ -70,6 +75,19 @@ const productSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+productSchema.pre("save",async function(next){
+  this.slug=slugify(this.name.toLowerCase())
+  next();
+});
+
+productSchema.pre("findOneAndUpdate", async function (next) {
+  const update = this.getUpdate();
+  if (update.name) {
+    update.slug = slugify(update.name.toLowerCase());
+  }
+  next();
+});
 
 
 export const Product=mongoose.model("Product", productSchema);
