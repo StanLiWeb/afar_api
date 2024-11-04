@@ -17,6 +17,8 @@ import categoryRouter from "./src/routes/categoryRoutes.js";
 import subCategoryRouter from "./src/routes/subCategoryRoutes.js";
 import wishlistRouter from "./src/routes/wishlistRoutes.js";
 import reviewRouter from "./src/routes/reviewRoutes.js";
+import orderRouter from "./src/routes/orderRoutes.js";
+import supportRouter from "./src/routes/supportRoutes.js";
 
 //load Enciroment variables from .env file
 dotenv.config();
@@ -42,6 +44,8 @@ app.use("/api/brand", brandRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/subcategory", subCategoryRouter);
 app.use("/api/review", reviewRouter);
+app.use("/api/order", orderRouter);
+app.use("/api/support", supportRouter);
 
 //Error handler middleware
 app.use(notFoundErrorHandler);
